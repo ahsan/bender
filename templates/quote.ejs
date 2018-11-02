@@ -6,17 +6,29 @@
   </head>
   <style>
       body {
-          background-color: lightgrey
+          background-color: white;
+          font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
       }
       div {
           margin-top: 100px;
-          width: 1000px;
-          padding: 20px;
-          background-color: white;
+          width: 70%;
+          padding: 25px;
+          background-color: #444444;
           font-size: 24pt;
-          font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-          color: #666666;
+          color: white;
           border-radius: 10px;
+      }
+      a {
+          position: relative;
+          top: 20px;
+          font-size: 18pt;
+      }
+      img {
+          position: absolute;
+          left: 79%;
+          top: 12%;
+          width: 13%;
+          max-width: 300px;
       }
   </style>
   <body>
@@ -25,7 +37,10 @@
         <div>
             "<%= quote %>" <i><%= character %></i>
         </div>
+        <a href="https://ahsan.io">ahsan.io</a>
     </center>
+
+    <img src="https://raw.githubusercontent.com/ahsan/bender/master/bender.png">
 
   </body>
 </html>
