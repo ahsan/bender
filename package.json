@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "zip": "zip -r ../bender.zip *"
+    "zip": "mkdir ./build && zip -r ./build/bender.zip *"
   },
   "author": "Abdullah Ahsan",
   "license": "ISC",
