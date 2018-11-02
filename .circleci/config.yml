@@ -6,16 +6,8 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:7.10
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
-
     steps:
       - checkout
 
@@ -40,4 +32,33 @@ jobs:
           path: ./build/bender.zip
           destination: bender_lambda.zip
 
+      # Cache the build folder for the deploy job
+      - save_cache:
+          key: v1-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+              - build
 
+  deploy:
+    docker:
+      - image: abdulah/awscli:latest
+    working_directory: ~/repo
+    steps:
+
+      # Restore cache from the build job which contains the
+      # build folder that needs to be deployed
+      - restore_cache:
+          key: v1-build-{{ .Environment.CIRCLE_BRANCH }}-{{ .Environment.CIRCLE_SHA1 }}
+
+      # Update the Lambda function
+      - run:
+          name: Updating randomFuturama
+          command: aws lambda update-function-code --function-name randomFuturama --zip-file fileb:///home/circleci/repo/build/bender.zip
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build

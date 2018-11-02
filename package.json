@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "zip": "mkdir -p ./build && zip -r ./build/bender.zip *"
+    "zip": "mkdir -p ./build && zip -r ./build/bender.zip *",
+    "deploy": "aws lambda update-function-code --function-name randomFuturama --zip-file fileb://./build/bender.zip"
   },
   "author": "Abdullah Ahsan",
   "license": "ISC",
