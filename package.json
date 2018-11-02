@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "zip": "mkdir ./build && zip -r ./build/bender.zip *"
+    "zip": "mkdir -p ./build && zip -r ./build/bender.zip *"
   },
   "author": "Abdullah Ahsan",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^2.6.1",
+    "ejs": "^2.6.1"
+  },
+  "devDependencies": {
     "express": "^4.16.4"
   }
 }
