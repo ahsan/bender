@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: "bender_svc"
+spec:
+  selector:
+    app: "bender"
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: "bender_deployment"
+  labels:
+    app: "bender"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "bender"
+  template:
+    metadata:
+      labels:
+        app: "bender"
+    spec:
+      containers:
+      - name: "bender"
+        image: abdulah/bender:latest
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
