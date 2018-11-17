@@ -26,11 +26,32 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
+
+      # make the zip file
       - run: npm run zip
 
+      # upload the zip file to circleci
       - store_artifacts:
           path: ./build/bender.zip
           destination: bender_lambda.zip
+
+      # build the docker image
+      - run:
+          name: Build docker image
+          command: |
+            docker build -t abdulah/bender:latest -f ./local.Dockerfile .
+
+      # login
+      - run:
+          name: Docker login
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      # push image to dockerhub
+      - run:
+          name: Push to dockerhub
+          command: |
+            docker push abdulah/bender:latest
 
       # Cache the build folder for the deploy job
       - save_cache:
@@ -38,7 +59,7 @@ jobs:
           paths:
               - build
 
-  deploy:
+  deploy_to_lambda:
     docker:
       - image: abdulah/awscli:latest
     working_directory: ~/repo
@@ -54,6 +75,31 @@ jobs:
           name: Updating randomFuturama
           command: aws lambda update-function-code --function-name randomFuturama --zip-file fileb:///home/circleci/repo/build/bender.zip
 
+  deploy_to_gke:
+    docker:
+      - image: google/cloud-sdk
+    environment:
+      - PROJECT_NAME: "bender"
+      - GOOGLE_PROJECT_ID: "bender-ahsan"
+      - GOOGLE_COMPUTE_ZONE: "us-central1"
+      - GOOGLE_CLUSTER_NAME: "bender-cluster-1"
+    steps:
+      - checkout
+      - run:
+          name: Setup Google Cloud SDK
+          command: |
+            apt-get install -qq -y gettext
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-key.json
+            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
+      - run:
+          name: Deploy to Kubernetes
+          command: |
+            kubectl apply -f ${HOME}/kubernetes.yaml
+            kubectl rollout status deployment/bender_deployment
+
 workflows:
   version: 2
   build_and_deploy:
@@ -62,9 +108,16 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy:
+      - deploy_to_lambda:
           filters:
             branches:
               only: master
           requires:
             - build
+      - deploy_to_gke:
+          filters:
+            branches:
+              only: master
+          requires:
+            - build
+

@@ -6,14 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "zip": "mkdir -p ./build && zip -r ./build/bender.zip *",
-    "deploy": "aws lambda update-function-code --function-name randomFuturama --zip-file fileb://./build/bender.zip"
+    "deploy": "aws lambda update-function-code --function-name randomFuturama --zip-file fileb://./build/bender.zip",
+    "start": "node local.handler.js"
   },
   "author": "Abdullah Ahsan",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^2.6.1"
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
   },
   "devDependencies": {
-    "express": "^4.16.4"
   }
 }

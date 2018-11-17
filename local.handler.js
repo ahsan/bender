@@ -10,11 +10,11 @@ const port = 3000;
 
 app.get('/', (req, res) => {
     handler(null, null, (err, response) => {
+
         if (err) {
             res.status(500).send(err);
         } else {
-            res.write(JSON.stringify(response));
-            res.end();
+            res.status(200).send(response);
         }
     })
 })
