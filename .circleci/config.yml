@@ -84,6 +84,7 @@ jobs:
       - GOOGLE_PROJECT_ID: "bender-ahsan"
       - GOOGLE_COMPUTE_ZONE: "us-central1"
       - GOOGLE_CLUSTER_NAME: "bender-cluster-1"
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -98,7 +99,7 @@ jobs:
       - run:
           name: Deploy to Kubernetes
           command: |
-            kubectl apply -f ${HOME}/kubernetes.yaml
+            kubectl apply -f ./kubernetes.yaml
             kubectl rollout status deployment/bender_deployment
 
 workflows:
