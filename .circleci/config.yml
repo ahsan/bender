@@ -100,7 +100,7 @@ jobs:
           name: Deploy to Kubernetes
           command: |
             kubectl apply -f ./kubernetes.yaml
-            kubectl rollout status deployment/bender_deployment
+            kubectl rollout status deployment/bender-deployment
 
 workflows:
   version: 2
