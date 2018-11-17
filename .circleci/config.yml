@@ -36,6 +36,7 @@ jobs:
           destination: bender_lambda.zip
 
       # build the docker image
+      - setup_remote_docker
       - run:
           name: Build docker image
           command: |
