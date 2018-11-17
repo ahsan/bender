@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "bender_svc"
+  name: "bender-svc"
 spec:
   selector:
     app: "bender"
@@ -14,7 +14,7 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: "bender_deployment"
+  name: "bender-deployment"
   labels:
     app: "bender"
 spec:
