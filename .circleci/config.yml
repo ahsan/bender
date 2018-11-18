@@ -99,7 +99,7 @@ jobs:
       - run:
           name: Substitute env vars
           command: |
-            envsubst < ${HOME}/kubernetes/deployment.yaml > ${HOME}/kubernetes/patched_deployment.yaml
+            envsubst < ./kubernetes/deployment.yaml > ./kubernetes/patched_deployment.yaml
       - run:
           name: Apply deployment
           command: |
