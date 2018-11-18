@@ -13,11 +13,5 @@ exports.handler = (event, context, callback) => {
     const renderedQuote = ejs.render(quoteTemplate, randomQuote());
     // callback is sending HTML back
 
-    const response = {
-        "headers": {
-            "BENDER_VERSION": 1
-        },
-        "body": renderedQuote
-    }
-    callback(null, response);
+    callback(null, renderedQuote);
 }

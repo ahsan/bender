@@ -13,10 +13,7 @@ app.get('/', (req, res) => {
         if (err) {
             res.status(500).send(err);
         } else {
-            for (const [key, value] of Object.entries(response.headers)) {
-                res.set(key, value);
-            }
-            res.status(200).send(response.body);
+            res.status(200).send(response);
         }
     })
 })
