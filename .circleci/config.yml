@@ -103,7 +103,7 @@ jobs:
       - run:
           name: Apply service
           command: |
-            kubectl apply -f ./kubernetes/srvice.yaml
+            kubectl apply -f ./kubernetes/service.yaml
       - run:
           name: Watch rollout
           command: |
