@@ -108,10 +108,10 @@ jobs:
           name: Apply service
           command: |
             kubectl apply -f ./kubernetes/service.yaml
-      - run:
-          name: Watch rollout
-          command: |
-            kubectl rollout status deployment/bender-deployment
+      # - run:
+      #     name: Watch rollout
+      #     command: |
+      #       kubectl rollout status deployment/bender-deployment
 
 workflows:
   version: 2
