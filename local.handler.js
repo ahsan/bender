@@ -10,11 +10,13 @@ const port = 3000;
 
 app.get('/', (req, res) => {
     handler(null, null, (err, response) => {
-
         if (err) {
             res.status(500).send(err);
         } else {
-            res.status(200).send(response);
+            for (const [key, value] of Object.entries(response.headers)) {
+                res.set(key, value);
+            }
+            res.status(200).send(response.body);
         }
     })
 })
