@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Build docker image
           command: |
-            docker build -t abdulah/bender:latest -f ./local.Dockerfile .
+            docker build -t abdulah/bender:${CIRCLE_SHA1} -f ./local.Dockerfile .
 
       # login
       - run:
@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Push to dockerhub
           command: |
-            docker push abdulah/bender:latest
+            docker push abdulah/bender:${CIRCLE_SHA1}
 
       # Cache the build folder for the deploy job
       - save_cache:
@@ -97,9 +97,13 @@ jobs:
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run:
+          name: Substitute env vars
+          command: |
+            envsubst < ${HOME}/kubernetes/deployment.yaml > ${HOME}/kubernetes/patched_deployment.yaml
+      - run:
           name: Apply deployment
           command: |
-            kubectl apply -f ./kubernetes/deployment.yaml
+            kubectl apply -f ./kubernetes/patched_deployment.yaml
       - run:
           name: Apply service
           command: |

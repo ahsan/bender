@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: "bender"
-        image: abdulah/bender:latest
+        image: abdulah/bender:${CIRCLE_SHA1}
         imagePullPolicy: Always
         ports:
         - name: http
