@@ -36,6 +36,7 @@ jobs:
           destination: bender_lambda.zip
 
       # build the docker image
+      - setup_remote_docker
       - run:
           name: Build docker image
           command: |
@@ -83,6 +84,7 @@ jobs:
       - GOOGLE_PROJECT_ID: "bender-ahsan"
       - GOOGLE_COMPUTE_ZONE: "us-central1"
       - GOOGLE_CLUSTER_NAME: "bender-cluster-1"
+    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -96,13 +98,16 @@ jobs:
             gcloud --quiet container clusters get-credentials ${GOOGLE_CLUSTER_NAME}
       - run:
           name: Apply deployments
-          command: kubectl apply -f ${HOME}/kubernetes/deployment.yaml
+          command: |
+            kubectl apply -f ${HOME}/kubernetes/deployment.yaml
       - run:
           name: Apply service
-          command: kubectl apply -f ${HOME}/kubernetes/service.yaml
+          command: |
+            kubectl apply -f ${HOME}/kubernetes/service.yaml
       - run:
           name: Watch rollout
-          command: kubectl rollout status deployment/bender_deployment
+          command: |
+            kubectl rollout status deployment/bender_deployment
 
 workflows:
   version: 2

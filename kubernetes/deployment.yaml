@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: "bender_deployment"
+  name: "bender-deployment"
   labels:
     app: "bender"
 spec:
