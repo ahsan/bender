@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ template "bender-chart.fullname" . }}-svc
+spec:
+  selector:
+    app: {{ template "bender-chart.fullname" . }}-bender
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: NodePort

@@ -1,0 +1,24 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "bender-chart.fullname" . }}-deployment
+  labels:
+    app: {{ template "bender-chart.fullname" . }}-bender
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: {{ template "bender-chart.fullname" . }}-bender
+  template:
+    metadata:
+      labels:
+        app: {{ template "bender-chart.fullname" . }}-bender
+    spec:
+      containers:
+      - name: "bender"
+        image: abdulah/bender:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
